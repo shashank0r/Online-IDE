@@ -1,0 +1,23 @@
+/* ===== ATHENA BACKGROUND ===== */
+body {
+  min-height: 100vh;
+  margin: 0;
+
+  background-image: url("/images/reg.png");
+  background-size: cover;          /* Fill screen */
+  background-position: top;     /* Center image */
+  background-repeat: no-repeat;    /* No tiling */
+  background-attachment: fixed;    /* Nice effect */
+
+  color: white;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* Dark overlay for readability */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55); /* Darkness level */
+  z-index: -1;
+}

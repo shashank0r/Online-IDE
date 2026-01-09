@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dashboard | Athena</title>
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  >
+  <link rel="stylesheet" href="dashboard.css">
+
+</head>
+
+<body class="bg-secondary text-light">
+
+  <div class="container mt-5">
+    
+    <div class="text-center mb-4">
+      <h1 id="welcome">🏛 Welcome</h1>
+      <p class="lead">Choose your language or continue working</p>
+    </div>
+
+    <!-- Language selection -->
+    <div class="text-center mb-5">
+      <a href="/editor.html?lang=js" class="btn btn-warning btn-lg m-2">
+        JavaScript
+      </a>
+      <a href="/editor.html?lang=py" class="btn btn-info btn-lg m-2">
+        Python
+      </a>
+    </div>
+
+    <!-- Recent files -->
+    <h3>📂 Recent Files</h3>
+    <ul class="list-group" id="filesList">
+      <li class="list-group-item">Loading files...</li>
+    </ul>
+
+    <div class="mt-4 text-center">
+      <a href="/logout" class="btn btn-outline-light">Logout</a>
+    </div>
+  </div>
+
+  <script>
+    // Fetch logged-in user info
+    fetch("/me")
+      .then(res => {
+        if (res.status === 401) {
+          window.location.href = "/login.html";
+        }
+        return res.json();
+      })
+      .then(user => {
+        document.getElementById("welcome").innerText =
+          "🏛 Welcome, " + user.username;
+      });
+
+    // Fetch recent files
+    fetch("/files")
+      .then(res => res.json())
+      .then(files => {
+        const list = document.getElementById("filesList");
+        list.innerHTML = "";
+
+        if (files.length === 0) {
+          list.innerHTML =
+            '<li class="list-group-item">No files yet</li>';
+          return;
+        }
+
+        files.forEach(file => {
+        const item = document.createElement("li");
+        item.className =
+            "list-group-item d-flex justify-content-between align-items-center";
+
+        item.style.cursor = "pointer";
+
+        item.innerHTML = `
+            <span>
+            <strong>${file.filename}</strong>
+            <small class="text-muted">(${file.language})</small>
+            </span>
+            <small>${new Date(file.updated_at).toLocaleString()}</small>
+        `;
+
+        // 🔥 CLICK → OPEN EDITOR WITH FILE
+        item.onclick = () => {
+            const lang =
+            file.language === "python" ? "py" : "js";
+
+            window.location.href =
+            `/editor.html?lang=${lang}&fileId=${file.id}`;
+        };
+
+        list.appendChild(item);
+        });
+    });
+  </script>
+
+</body>
+</html>
