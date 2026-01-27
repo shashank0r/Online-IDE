@@ -1,12 +1,12 @@
 let currentFileId = null;
 document.getElementById("newFileBtn").onclick = () => {
-  currentFileId = null;                 // 🔑 reset ID
+  currentFileId = null;                 //  reset ID
   document.getElementById("filename").value = "";
   editor.setValue("");
 };
 
 document.getElementById("newFileBtn").onclick = () => {
-  currentFileId = null;                 // 🔑 reset ID
+  currentFileId = null;                 //  reset ID
   document.getElementById("filename").value = "";
   editor.setValue("");
 };
@@ -105,7 +105,7 @@ function saveFile(silent = false) {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      id: currentFileId, // 🔑 KEY TO PREVENT DUPLICATES
+      id: currentFileId, //  KEY TO PREVENT DUPLICATES
       filename,
       language: language === "py" ? "python" : "javascript",
       code
@@ -113,7 +113,7 @@ function saveFile(silent = false) {
   })
     .then(res => res.json())
     .then(data => {
-      // 🔥 STORE FILE ID AFTER FIRST SAVE
+      // STORE FILE ID AFTER FIRST SAVE
       currentFileId = data.id;
 
       if (!silent) {
